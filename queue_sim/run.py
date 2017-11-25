@@ -19,8 +19,8 @@ class Node:
 class Device:
     def __init__(self, DevID):
         self.DevID = DevID
-        self.NodeIn = "Not Set"
-        self.NodeOut = "Not Set"
+        self.NodeAID = "Not Set"
+        self.NodeBID = "Not Set"
         self.Inflow = True
     def NodeIn(self):
         return self.NodeIn
@@ -30,7 +30,10 @@ class Device:
         return self.Inflow
 
 NodeA = Node(1, 0, 10)
-nodes = {'NodeID': NodeA.NodeID, 'Long': NodeA.long, 'Lat': NodeA.lat}
+DeviceA = Device(1)
+# nodes = {'NodeID': NodeA.NodeID, 'Long': NodeA.long, 'Lat': NodeA.lat}
+nodes = {NodeA.NodeID: NodeA.long, NodeA.lat}
+devices = {}
 
 
 
