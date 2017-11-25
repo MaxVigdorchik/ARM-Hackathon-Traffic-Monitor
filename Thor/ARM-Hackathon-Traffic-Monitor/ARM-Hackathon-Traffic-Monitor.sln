@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARM-Hackathon-Traffic-Monit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAnalysis", "DataAnalysis\DataAnalysis.csproj", "{196FBA45-03DB-4FCA-90C2-7B06305DC8E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graph", "Graph\Graph.csproj", "{B17C8083-93F5-41B3-B5F2-CCCC8C0CB588}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{196FBA45-03DB-4FCA-90C2-7B06305DC8E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{196FBA45-03DB-4FCA-90C2-7B06305DC8E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{196FBA45-03DB-4FCA-90C2-7B06305DC8E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B17C8083-93F5-41B3-B5F2-CCCC8C0CB588}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B17C8083-93F5-41B3-B5F2-CCCC8C0CB588}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B17C8083-93F5-41B3-B5F2-CCCC8C0CB588}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B17C8083-93F5-41B3-B5F2-CCCC8C0CB588}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
