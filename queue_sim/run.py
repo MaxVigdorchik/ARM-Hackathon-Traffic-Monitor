@@ -36,8 +36,11 @@ for i in range(len(NodeList)):
     nodes.update({NodeList[i].id: [NodeList[i].long, NodeList[i].lat]})
     devices.update({DeviceList[i].id: [DeviceList[i].node_in, DeviceList[i].node_out, DeviceList[i].inflow]})
 
-print(nodes)
-print(devices)
+with open('nodes.json', 'w') as fp:
+    json.dump(nodes, fp)
+    
+with open('devices.json', 'w') as fp:
+    json.dump(devices, fp)
 
 
 
