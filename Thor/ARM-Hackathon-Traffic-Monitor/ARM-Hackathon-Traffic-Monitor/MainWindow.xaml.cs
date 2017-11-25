@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using DataAnalysis;
+
 namespace ARM_Hackathon_Traffic_Monitor
 {
     /// <summary>
@@ -23,6 +25,7 @@ namespace ARM_Hackathon_Traffic_Monitor
         public MainWindow()
         {
             InitializeComponent();
+            Retrieve.Initialise();
         }
     }
 }
