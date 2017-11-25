@@ -1,0 +1,55 @@
+# Ignore BUILD directories
+BCU/BUILD/
+BMU/BUILD/
+Charger/BUILD/
+Driver_controls/BUILD/
+IVT-A_board/BUILD/
+Steering_sensor_test/BUILD/
+Temperature_pcb/BUILD/
+Tracking_control/BUILD/
+Workingcellvoltage/BUILD/
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+*.bin
+
+# Text editor Temp Files
+*~
+.#*
+*#
+
+#GGtags files for navigating in Emacs
+GTAGS
+GSYMS
+GRTAGS
+GPATH
