@@ -1,15 +1,15 @@
-
+import json
 # Make fake graph for data and testing
 
 # Nodes
 
 class Node:
-    def __init__(self, nodeID, long, lat):
-        self.nodeID = nodeID
+    def __init__(self, NodeID, long, lat):
+        self.nodeID = NodeID
         self.long = long
         self.lat = lat
 
-    def nodeID(self):
+    def NodeID(self):
         return self.nodeID
     def long(self):
         return self.long
@@ -28,5 +28,9 @@ class Device:
         return self.NodeOut
     def Inflow(self):
         return self.Inflow
+
+NodeA = Node(1, 0, 10)
+nodes = {'NodeID': NodeA.NodeID, 'Long': NodeA.long, 'Lat': NodeA.lat}
+
 
 
