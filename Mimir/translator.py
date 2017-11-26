@@ -56,10 +56,9 @@ class Translator:
 
 
 def main():
-    # tr = Translator(host='mqtt.ntomi.me')
-    # tr.connect()
-
-    cl = mqtt.Client(userdata=['mqtt.ntomi.me', 'Valhalla/Odin/Raw', 'Valhalla/Traffic'])
+    cl = mqtt.Client(client_id='valhalla-translator',
+                     userdata=['mqtt.ntomi.me', 'Valhalla/Odin/Raw',
+                               'Valhalla/Traffic'])
     cl.on_connect = on_connect
     cl.on_message = on_message
     cl.connect('mqtt.ntomi.me')
