@@ -72,14 +72,24 @@ for i in range(int(10 / interval)):
 
     start_int = int((datetime.datetime.now() - datetime.datetime.utcfromtimestamp(0)).total_seconds()*1000)
     start_str = "/Date({:d})/".format(start_int)
-    time.sleep(interval) # time in seconds (interval = 0.5)
+    time.sleep(interval)  # time in seconds (interval = 0.5)
 
-
-    for i in range(len(DeviceList)):
-        dur_int = np.random.poisson(DeviceList[i].lam)
-        device = {"deviceID": i, "interactions": [{"start": start_str, "duration": dur_int}]}
-        traffic.append(device)
-
+    for j in range(len(DeviceList)):
+        dur = np.random.normal(DeviceList[j].lam, 0.5)
+        dur = abs(dur)
+        # if dur_int > 1:
+        if dur < 0.001:
+            prob = 1
+        else:
+            prob = np.random.normal((1 / dur), 1)
+            prob = abs(prob)
+        print(prob)
+        if prob > 0.2:
+            device = {"deviceID": j, "interactions": [{"start": start_str, "duration": dur}]}
+            traffic.append(device)
+        else:
+            pass
+# print(traffic)
 with open('traffic.json', 'w') as fp:
     json.dump(traffic, fp)
 
