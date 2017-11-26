@@ -4,6 +4,7 @@ using System.Net;
 using System.Web.Script.Serialization;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
+using System.IO;
 
 namespace DataAnalysis
 {
@@ -15,6 +16,7 @@ namespace DataAnalysis
 
         static string TrafficTopic = "Valhalla/Traffic"; // decide exact later
         static string GraphTopic = "Valhalla/Graph";
+        static string TestTopic = "Mbed";
 
         public static void Initialise()
         {
@@ -25,10 +27,13 @@ namespace DataAnalysis
         //graph creation
         private static void CreateGraph()
         {
-            string NodesJSON = "PLEASE REPLACE"; // use right method of retrieval
-            string DevicesJSONString = "PLEASE CHANGE ME";
+            string NodesPath = "../../../../../queue_sim/nodes.json";
+            string DevicesPath = "../../../../../queue_sim/devices.json";
 
-            List<INodeJSON> nodesList = Ser.Deserialize<List<INodeJSON>>(NodesJSON);
+            string NodesJSON = File.ReadAllText(NodesPath);
+            string DevicesJSONString = File.ReadAllText(DevicesPath);
+
+            List<NodeJSON> nodesList = Ser.Deserialize<List<NodeJSON>>(NodesJSON);
             List<DeviceJSON> deviceList = Ser.Deserialize<List<DeviceJSON>>(DevicesJSONString);
 
             foreach (var nodeJSON in nodesList)
@@ -46,12 +51,13 @@ namespace DataAnalysis
         //MQTT stuff
         private static void SubscribeToMQTT()
         {
-            string[] topics = new string[2];
-            topics[0] = TrafficTopic;
-            topics[1] = GraphTopic;
+            string[] topics = new string[1];
+            //topics[0] = TrafficTopic;
+            //topics[1] = GraphTopic;
+            topics[0] = TestTopic;
 
             byte[] qosLevels = new byte[1];
-            qosLevels[0] = (byte)2;
+            qosLevels[0] = (byte)1;
 
             Client.Connect(ClientAddress);
             Client.Subscribe(topics, qosLevels);
@@ -61,15 +67,12 @@ namespace DataAnalysis
 
         private static void Client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
-            if (e.Topic == TrafficTopic)
-            {
-                string message = System.Text.Encoding.Default.GetString(e.Message); // retrieves message
-                IDataPacketJSON packet = Ser.Deserialize<DataPacketJSON>(message); // converts from json
-                IDevice device = Dictionaries.Devices[packet.deviceID];
-                bool inFlow = device.InFlow;
+            string message = System.Text.Encoding.Default.GetString(e.Message); // retrieves message
+            IDataPacketJSON packet = Ser.Deserialize<DataPacketJSON>(message); // converts from json
+            IDevice device = Dictionaries.Devices[packet.deviceID];
+            bool inFlow = device.InFlow;
 
-                device.Edge.Update(inFlow, packet);
-            }
+            device.Edge.Update(inFlow, packet);
         }
     }
 }

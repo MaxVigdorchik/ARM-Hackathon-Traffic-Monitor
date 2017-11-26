@@ -14,10 +14,8 @@ namespace DataAnalysis
             INode NodeB = Dictionaries.Nodes[deviceJSON.NodeBID];
 
             this.DeviceID = deviceJSON.DeviceID;
-            this.Edge = new Edge(NodeA, NodeB);
+            this.Edge = Dictionaries.ReturnIfPresentElseAdd(NodeA, NodeB);
             this.InFlow = deviceJSON.InFlow;
-
-            NodeA.Edges.Add(Edge);
         }
     }
 }

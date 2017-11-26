@@ -6,14 +6,14 @@ namespace DataAnalysis
     //Dictionary items
     public interface IDevice
     {
-        IEdge Edge { get; set; }
-        bool InFlow { get; set; }
+        IEdge Edge { get;}
+        bool InFlow { get;}
     }
 
     public interface IEdge
     {
-        INode NodeA { get; set; }
-        INode NodeB { get; set; }
+        INode NodeA { get;}
+        INode NodeB { get;}
 
         void Update(bool inFlow, IDataPacketJSON packet);
     }

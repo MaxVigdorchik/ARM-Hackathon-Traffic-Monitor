@@ -12,7 +12,6 @@ namespace DataAnalysis
 
         private List<double> Durations { get; set; }
         private double Sum;
-        private bool Looped;
 
         public INode NodeA { get; private set; }
         public INode NodeB { get; private set; }
@@ -21,6 +20,9 @@ namespace DataAnalysis
         {
             Durations = new List<double>();
             Sum = 0;
+
+            this.NodeA = nodeA;
+            this.NodeB = nodeB;
         }
 
         public void Update(bool inFlow, IDataPacketJSON packet)
