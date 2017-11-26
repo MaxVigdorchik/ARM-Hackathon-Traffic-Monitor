@@ -5,9 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ARM_Hackathon_Traffic_Monitor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="800" Width="1400" Background="White">
     <Grid>
-        <Canvas Name="Map" HorizontalAlignment="Left" Height="246" Margin="50,33,0,0" VerticalAlignment="Top" Width="291"/>
-
+        <Canvas Name="Map" HorizontalAlignment="Left" Height="700" Margin="50,33,0,0" VerticalAlignment="Top" Width="1000"/>
+        <Canvas HorizontalAlignment="Right" Height="750" Margin="1050,10,0,0" VerticalAlignment="Top" Width="300" Background="#FF00A8FF">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="280"  Canvas.Left="10" Canvas.Top="10">
+                <Label x:Name="nodeLabel" Content="NodeID:" FontSize="20"/>
+                <TextBox x:Name="NodeIDBox" FontSize="20" TextWrapping="Wrap" Text="Hover over Node to Select"/>
+                <Label x:Name="edgeLabel" Content="Edge from node {A} to {B}:" FontSize="20"/>
+                <TextBox x:Name="EdgeBox" FontSize="20" TextWrapping="Wrap" Text="Hover over Edge to Select"/>
+                <Label x:Name="weightLabel" Content="Weighting of Edge:" FontSize="20"/>
+                <TextBox x:Name="WeightBox" FontSize="20" TextWrapping="Wrap" Text="Estimated traversal time"/>
+                <Label x:Name="stats" Content="Most recent packet" FontSize="20"/>
+                <TextBox x:Name="PacketBox" Height="450" TextWrapping="Wrap" Text=""/>
+                <Button x:Name="QuitButton" Content="Quit" Click="QuitButton_Click"/>
+                <Button x:Name="RestartButton" Content="Restart" Click="RestartButton_Click"/>
+            </StackPanel>
+        </Canvas>
     </Grid>
 </Window>

@@ -1,1 +1,21 @@
 C:\Users\ltray\Documents\Visual Studio 2015\Projects\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\bin\Debug\ARM-Hackathon-Traffic-Monitor.exe.config
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\bin\Debug\ARM-Hackathon-Traffic-Monitor.exe.config
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\bin\Debug\ARM-Hackathon-Traffic-Monitor.exe
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\bin\Debug\ARM-Hackathon-Traffic-Monitor.pdb
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\obj\Debug\ARM-Hackathon-Traffic-Monitor.csprojResolveAssemblyReference.cache
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\obj\Debug\MainWindow.g.cs
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\obj\Debug\App.g.cs
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\obj\Debug\ARM-Hackathon-Traffic-Monitor_MarkupCompile.cache
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\obj\Debug\ARM-Hackathon-Traffic-Monitor_MarkupCompile.lref
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\obj\Debug\MainWindow.baml
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\obj\Debug\ARM-Hackathon-Traffic-Monitor.g.resources
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\obj\Debug\ARM_Hackathon_Traffic_Monitor.Properties.Resources.resources
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\obj\Debug\ARM-Hackathon-Traffic-Monitor.csproj.GenerateResource.Cache
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\obj\Debug\ARM-Hackathon-Traffic-Monitor.exe
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\obj\Debug\ARM-Hackathon-Traffic-Monitor.pdb
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\bin\Debug\DataAnalysis.dll
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\bin\Debug\M2Mqtt.Net.dll
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\bin\Debug\DataAnalysis.pdb
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\bin\Debug\M2Mqtt.Net.pdb
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\bin\Debug\HSVtoRGB.dll
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\bin\Debug\HSVtoRGB.pdb
