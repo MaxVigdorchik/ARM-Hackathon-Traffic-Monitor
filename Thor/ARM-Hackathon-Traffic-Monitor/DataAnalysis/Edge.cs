@@ -1,10 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using HSVtoRGB;
+using System.Windows.Media;
+using System.Windows.Shapes;
+
 namespace DataAnalysis
 {
     public class Edge : IEdge
     {
+        private const double RED_THRESHOLD = 5;
+        private const double ORANGE_THRESHOLD = 3;
+
         private const int MAX_STORE = 100;
 
         private int CarCount { get; set; }
@@ -55,17 +62,49 @@ namespace DataAnalysis
                 }
             }
 
-            double ratio = Math.Log(MeanDuration * 1000) / Math.Log(100000);
             IDevice dev = Dictionaries.Devices[packet.deviceID];
             int nodeBID = dev.Edge.NodeB.NodeID;
-            //add code to change colour of node
+            Ellipse e = Dictionaries.NodeEllipses[nodeBID];
+
+            e.Dispatcher.Invoke(() =>
+            {
+                if (MeanDuration < ORANGE_THRESHOLD)
+                {
+                    e.Fill = new SolidColorBrush(Colors.GreenYellow);
+                }
+                else if (MeanDuration < RED_THRESHOLD)
+                {
+                    e.Fill = new SolidColorBrush(Colors.Orange);
+                }
+                else
+                {
+                    e.Fill = new SolidColorBrush(Colors.Red);
+                }
+            });          
 
             Dictionaries.SetColours();
         }
 
         public double GetWeight()
         {
-            return CarCount * MeanDuration;
+            if (CarCount <= 0)
+            {
+                return MeanDuration;
+            }
+            else if (MeanDuration <= 0)
+            {
+                return CarCount;
+            }
+            else
+            {
+                return CarCount * MeanDuration;
+            }
+        }
+
+        public override string ToString()
+        {
+            string res = "CarCount: " + CarCount + " MeanDuration: " + MeanDuration;
+            return res;
         }
     }
 }

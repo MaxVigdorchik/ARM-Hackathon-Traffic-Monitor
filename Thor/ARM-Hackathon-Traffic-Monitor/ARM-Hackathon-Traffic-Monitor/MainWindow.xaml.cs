@@ -26,11 +26,17 @@ namespace ARM_Hackathon_Traffic_Monitor
         public MainWindow()
         {
             InitializeComponent();
-            Retrieve.Initialise(PacketBox);
-            Retrieve.ReadFromFile();
+            Retrieve.Initialise(PacketBox);           
             Display.Initialise(NodeIDBox, EdgeBox, WeightBox, Map);
             Display.Edges();
             Display.Nodes();
+
+            Loaded += MainWindow_Loaded;
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            //Retrieve.ReadFromFile();
         }
 
         public class Display
@@ -159,7 +165,7 @@ namespace ARM_Hackathon_Traffic_Monitor
                 int B = edge.NodeB.NodeID;
 
                 EdgeBox.Text = A + " --> " + B;
-                WeightBox.Text = Convert.ToString(edge.GetWeight());
+                WeightBox.Text = edge.ToString();
 
                 SystemSounds.Beep.Play();
             }
@@ -169,6 +175,9 @@ namespace ARM_Hackathon_Traffic_Monitor
                 Line L = new Line();
                 L.StrokeThickness = 5;
                 L.Stroke = new SolidColorBrush(Colors.Black);
+                L.StrokeLineJoin = PenLineJoin.Round;
+                L.StrokeDashCap = PenLineCap.Triangle;
+                L.Opacity = 0.5;
                 return L;
             }
         }

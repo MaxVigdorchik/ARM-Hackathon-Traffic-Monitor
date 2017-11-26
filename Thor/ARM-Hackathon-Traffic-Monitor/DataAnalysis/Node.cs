@@ -12,13 +12,15 @@ namespace DataAnalysis
         public double Longitude { get; private set; }
         public double Latitude { get; private set; }
 
-        public List<IEdge> Edges {get; set;}
+        public List<IEdge> Edges { get; set; }
 
         public Node(INodeJSON n)
         {
             this.NodeID = n.NodeID;
             this.Longitude = n.Longitude;
             this.Latitude = n.Latitude;
+
+            Edges = new List<IEdge>();
         }
     }
 }

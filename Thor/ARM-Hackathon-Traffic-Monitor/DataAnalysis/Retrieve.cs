@@ -59,9 +59,9 @@ namespace DataAnalysis
         private static void SubscribeToMQTT()
         {
             string[] topics = new string[1];
-            //topics[0] = TrafficTopic;
+            topics[0] = TrafficTopic;
             //topics[1] = GraphTopic;
-            topics[0] = TestTopic;
+            //topics[0] = TestTopic;
 
             byte[] qosLevels = new byte[1];
             qosLevels[0] = (byte)1;
@@ -75,21 +75,38 @@ namespace DataAnalysis
         private static void Client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
             string message = System.Text.Encoding.Default.GetString(e.Message); // retrieves message        
-            PacketBox.Dispatcher.Invoke(() =>
-            {
-                PacketBox.Text = message;
-            });
+            
 
             if (e.Topic == TrafficTopic)
             {
-                StreamWriter w = new StreamWriter(LogFilePath);
-                w.WriteLine(message);                
+                //StreamWriter w = new StreamWriter(LogFilePath);
+                //w.WriteLine(message);                
 
                 IDataPacketJSON packet = Ser.Deserialize<DataPacketJSON>(message); // converts from json
+
+                PacketBox.Dispatcher.Invoke(() =>
+                {
+                    PacketBox.Text = Convert2String(packet);
+                });
+
                 IDevice device = Dictionaries.Devices[packet.deviceID];
                 bool inFlow = device.InFlow;
                 device.Edge.Update(inFlow, packet);
             }
+        }
+
+        private static string Convert2String(IDataPacketJSON packet)
+        {
+            string rep = "deviceID: " + packet.deviceID + "\n";
+            rep += "interactions: { \n";
+            foreach (var interaction in packet.interactions)
+            {
+                rep += "start: " + interaction.start + "\n";
+                rep += "duration: " + interaction.duration + "\n";
+                rep += ",\n";
+            }
+            rep += "}";
+            return rep;
         }
 
         public static void ReadFromFile()

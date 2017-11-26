@@ -30,7 +30,10 @@ public static class Dictionaries
         }
 
         Edge newEdge = new Edge(nodeA, nodeB);
+
         Edges.Add(NextEdgeID, newEdge);
+        nodeA.Edges.Add(newEdge);
+
         NextEdgeID++;
         return newEdge;
     }
@@ -65,7 +68,6 @@ public static class Dictionaries
         double weighting;
         double ratio;
         Line L;
-        SolidColorBrush B;
 
         foreach (var edgeItem in Edges)
         {
@@ -75,8 +77,12 @@ public static class Dictionaries
             ratio = edgeValue.GetWeight() / MaxWeighting;
 
             Color col = HSV2RGB.Convert((float)ratio, 1.0f, 1.0f, 1.0f);
-            L.Stroke = new SolidColorBrush(col);
-            L.StrokeThickness = MAX_THICKNESS * ratio + 1;
+
+            L.Dispatcher.Invoke(() =>
+            {
+                L.Stroke = new SolidColorBrush(col);
+                L.StrokeThickness = MAX_THICKNESS * ratio + 1;
+            });           
         }
     }
 }
