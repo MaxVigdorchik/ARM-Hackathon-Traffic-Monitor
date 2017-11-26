@@ -3,6 +3,7 @@ import datetime
 import time
 import numpy as np
 import paho.mqtt.client as mqtt
+import scipy.stats as stats
 
 # Make fake graph for data and testing
 
@@ -12,6 +13,7 @@ mqttc.reinitialise(client_id="Eir", clean_session=True, userdata=None)
 
 mqttc.connect("mqtt.ntomi.me")
 
+'''
 # Nodes
 
 
@@ -49,7 +51,7 @@ devices_string = []
 #     nodes.update({NodeList[i].id: [NodeList[i].long, NodeList[i].lat]})
 # for i in range(len(DeviceList)):
 #     devices.update({DeviceList[i].id: [DeviceList[i].node_in, DeviceList[i].node_out, DeviceList[i].inflow]})
-
+ 
 for i in range(len(NodeList)):
     node = {"NodeID": NodeList[i].id, "Longitude": NodeList[i].long, "Latitude": NodeList[i].lat}
     nodes_string.append(node)
@@ -69,6 +71,7 @@ for i in range(len(DeviceList)):
 
 with open('devices.json', 'w') as fp:
     json.dump(devices_string, fp)
+ '''
 
 
 
@@ -77,45 +80,70 @@ mqttc.loop_start()
 while True:
 
     # Simulate Traffic
-
-    num_devices = 1480
-    sample_weights = np.random.normal(4, 1, num_devices)
-
-    interval = 0.5
     traffic = []
 
-    for j in range(int(2 / interval)):
+    num_devices = 1480
+    # num_devices = 50
 
-        start_int = int((datetime.datetime.now() - datetime.datetime.utcfromtimestamp(0)).total_seconds()*1000)
+    lower, upper = 1, 7
+    mu, sigma = 3, 1
+
+    X = stats.truncnorm(
+        (lower - mu) / sigma, (upper - mu) / sigma, loc=mu, scale=sigma)
+
+    sample_weights = X.rvs(num_devices)
+
+    interval = 5
+
+    interactions = []
+    devices = []
+    times = []
+    for j in range(int(10 / interval)):
+        start_int = int((datetime.datetime.now() - datetime.datetime.utcfromtimestamp(0)).total_seconds() * 1000)
         start_str = "/Date({:d})/".format(start_int)
         time.sleep(interval)  # time in seconds (interval = 0.5)
 
-        for i in range(len(sample_weights)):
-            dur = np.random.normal(sample_weights[i], 0.5)
-            dur = abs(dur)
-            # if dur_int > 1:
+        times.append(start_str)
+
+    for j in range(num_devices):
+        # devices.append(i)
+
+
+        for i in range(len(times)):
+
+            lower, upper = 1, 5
+            mu, sigma = sample_weights[i], 0.5
+
+            dur = stats.truncnorm(
+                (lower - mu) / sigma, (upper - mu) / sigma, loc=mu, scale=sigma)
+            dur = dur.rvs(1)
+            dur = dur[0]
+            # print(dur)
             if dur < 0.001:
                 prob = 1
             else:
                 prob = np.random.normal((1 / dur), 1)
                 prob = abs(prob)
 
-            if prob > 0.2:
-                device = {"deviceID": j, "interactions": [{"start": start_str, "duration": dur}]}
-                traffic.append(device)
+            # print(start_str)
+            # print(dur)
+            if prob > 0.3:
+                interactions.append({"start": times[i], "duration": int(dur)})
             else:
                 pass
-        # print(traffic)
-    # with open('traffic.json', 'w') as fp:
-    #     json.dump(traffic, fp)
+
+        # print(interactions)
+        traffic.append({"deviceID": j, "interactions": interactions})
+    # print(traffic)
+# with open('traffic.json', 'w') as fp:
+#     json.dump(traffic, fp)
 
 
-    # for i in range(len(traffic)):
-    #     mqttc.publish("Valhalla/Traffic", json.dumps(traffic[i]), qos=1)
+# for i in range(len(traffic)):
+#     mqttc.publish("Valhalla/Traffic", json.dumps(traffic[i]), qos=1)
 
     mqttc.publish("Valhalla/Traffic", json.dumps(traffic), qos=1)
-
-
+    # print(traffic)
 
 # for i in range(int(10 / interval)):
 #
