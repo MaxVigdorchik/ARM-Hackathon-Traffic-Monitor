@@ -90,6 +90,14 @@ namespace DataAnalysis
             if (e.Topic == TrafficTopic)
             {           
                 List<DataPacketJSON> packetList = Ser.Deserialize<List<DataPacketJSON>>(message); // converts from json
+                if(packetList.Count == 0)
+                {
+                    packetList.Add(Ser.Deserialize<DataPacketJSON>(message));
+                }
+                else
+                {
+                    packetList = Shuffle(packetList);
+                }
 
                 PacketBox.Dispatcher.Invoke(() =>
                 {
@@ -142,17 +150,30 @@ namespace DataAnalysis
 
             BackgroundWorker bgw = new BackgroundWorker();
             bgw.DoWork += Bgw_DoWork;
-            bgw.RunWorkerAsync(packets);
-            
+            bgw.RunWorkerAsync(packets);           
         }
 
         private static void Bgw_DoWork(object sender, DoWorkEventArgs e)
         {
             List<DataPacketJSON> packets = e.Argument as List<DataPacketJSON>;
             IDevice device;
+            int i = 0;
 
             foreach (var packet in packets)
             {
+                i++;
+                if (i % 50 == 0)
+                {
+                    try
+                    {
+                        PacketBox.Dispatcher.Invoke(() =>
+                        {
+                            PacketBox.Text = Convert2String(packet);
+                        });
+                    }
+                    catch { }
+                }
+
                 device = Dictionaries.Devices[packet.deviceID];
                 bool inFlow = device.InFlow;
                 device.Edge.Update(inFlow, packet);
@@ -315,7 +336,7 @@ namespace DataAnalysis
                 for(int j = 0; j < rand.Next(10); j++)
                 {
                     interaction = new InteractionJSON();
-                    interaction.start = "0";
+                    interaction.start = DateTime.Now.ToShortTimeString();
                     interaction.duration = rand.NextDouble() * 6;
 
                     packet.interactions.Add(interaction);

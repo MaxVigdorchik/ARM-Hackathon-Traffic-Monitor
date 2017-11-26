@@ -174,8 +174,7 @@ namespace ARM_Hackathon_Traffic_Monitor
                 EdgeBox.Text = A + " --> " + B;
                 WeightBox.Text = edge.ToString();
                 //WeightBox.Text = Convert.ToString(edge.GetWeight());
-
-                SystemSounds.Beep.Play();
+                //SystemSounds.Beep.Play();
             }
 
             public static Line CreateNewLine()

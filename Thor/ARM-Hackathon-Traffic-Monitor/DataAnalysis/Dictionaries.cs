@@ -75,6 +75,7 @@ public static class Dictionaries
             weighting = edgeValue.GetWeight();
             L = EdgeLines[edgeItem.Key];
             ratio = edgeValue.GetWeight() / MaxWeighting;
+            ratio = Math.Sqrt(ratio);
 
             Color col = HSV2RGB.Convert((float)ratio, 1.0f, 1.0f, 1.0f);
 
