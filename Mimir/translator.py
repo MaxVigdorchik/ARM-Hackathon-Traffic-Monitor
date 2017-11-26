@@ -2,19 +2,27 @@
 import mimir
 import paho.mqtt.client as mqtt
 import logging
+import os
+import sys
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+if any([os.environ.get('MIMIR_DEBUG') != '0',
+        '-d' in sys.argv, '--debug' in sys.argv]):
+    logger.setLevel(logging.DEBUG)
+else:
+    logger.setLevel(logging.INFO)
 
 
 def on_message(cl, userdata, message):
     logger.info("Received message on topic %s", message.topic)
     if message.topic == userdata[1]:
-        m_info = cl.publish(userdata[2],
-                            mimir.dotnet(mimir.decode(message.payload)), 1)
+        j = mimir.dotnet(mimir.decode(message.payload))
+        m_info = cl.publish(userdata[2], j, 1)
         logger.info("Translated raw message %d as "
                     "new traffic message %d", message.mid, m_info.mid)
+        logger.debug("Raw message: %s", message.payload)
+        logger.debug("Traffic message: %s", j)
 
 
 def on_connect(cl, userdata, flags, rc):
