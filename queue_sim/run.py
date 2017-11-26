@@ -77,7 +77,7 @@ for i in range(int(10 / interval)):
 
     for i in range(len(DeviceList)):
         dur_int = np.random.poisson(DeviceList[i].lam)
-        device = {"DeviceID": i, "Interactions": [{"start": start_str, "duration": dur_int}]}
+        device = {"deviceID": i, "interactions": [{"start": start_str, "duration": dur_int}]}
         traffic.append(device)
 
 with open('traffic.json', 'w') as fp:
