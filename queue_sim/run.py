@@ -1,6 +1,7 @@
 import json
 import datetime
 import time
+import numpy as np
 # Make fake graph for data and testing
 
 # Nodes
@@ -30,7 +31,7 @@ NodeList = [Node(1, 0, 10), Node(2, 0, 20), Node(3, 0, 30), Node(4, 10, 30), Nod
 # Device1 = Device(1, 1, 2, True)
 # Device2 = Device(2, 1, 2, False)
 
-DeviceList = [Device(0, 1, 2, True, 2), Device(1, 1, 2, False, 7), Device(2, 2, 3, True, 4), Device(3, 2, 3, False, 4), Device(4, 3, 4, True, 4), Device(5, 3, 4, False, 6), Device(6, 4, 5, True, 5), Device(7, 4, 5, False, 5), Device(8, 5, 6, True, 3), Device(9, 5, 6, False, 3), Device(10, 6, 7, True, 5), Device(11, 6, 7, False, 2), Device(12, 7, 8, True, 3), Device(13, 7, 8, False, 3, Device(14, 8, 2, True, 5), Device(15, 8, 2, False, 2)]
+DeviceList = [Device(0, 1, 2, True, 2), Device(1, 1, 2, False, 7), Device(2, 2, 3, True, 4), Device(3, 2, 3, False, 4), Device(4, 3, 4, True, 4), Device(5, 3, 4, False, 6), Device(6, 4, 5, True, 5), Device(7, 4, 5, False, 5), Device(8, 5, 6, True, 3), Device(9, 5, 6, False, 3), Device(10, 6, 7, True, 5), Device(11, 6, 7, False, 2), Device(12, 7, 8, True, 3), Device(13, 7, 8, False, 3), Device(14, 8, 2, True, 5), Device(15, 8, 2, False, 2)]
 
 node = {}
 device = {}
@@ -67,15 +68,15 @@ with open('devices.json', 'w') as fp:
 interval = 0.5
 traffic = []
 
-for i in range(10 / interval):
+for i in range(int(10 / interval)):
 
     start_int = int((datetime.datetime.now() - datetime.datetime.utcfromtimestamp(0)).total_seconds()*1000)
     start_str = "/Date({:d})/".format(start_int)
     time.sleep(interval) # time in seconds (interval = 0.5)
 
 
-    for i in range(len(devices_string)):
-        dur_int = numpy.random.poisson(devices_string[i].lam, 1)
+    for i in range(len(DeviceList)):
+        dur_int = np.random.poisson(DeviceList[i].lam)
         device = {"DeviceID": i, "Interactions": [{"start": start_str, "duration": dur_int}]}
         traffic.append(device)
 
