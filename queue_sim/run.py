@@ -31,8 +31,7 @@ NodeList = [Node(1, 0, 10), Node(2, 0, 20), Node(3, 0, 30), Node(4, 10, 30), Nod
 # Device1 = Device(1, 1, 2, True)
 # Device2 = Device(2, 1, 2, False)
 
-DeviceList = [Device(0, 1, 2, True, 2), Device(1, 1, 2, False, 7), Device(2, 2, 3, True, 4), Device(3, 2, 3, False, 4), Device(4, 3, 4, True, 4), Device(5, 3, 4, False, 6), Device(6, 4, 5, True, 5), Device(7, 4, 5, False, 5), Device(8, 5, 6, True, 3), Device(9, 5, 6, False, 3), Device(10, 6, 7, True, 5), Device(11, 6, 7, False, 2), Device(12, 7, 8, True, 3), Device(13, 7, 8, False, 3), Device(14, 8, 2, True, 5), Device(15, 8, 2, False, 2)]
-
+DeviceList = [Device(0, 1, 2, True, 2), Device(1, 1, 2, False, 7), Device(2, 2, 3, True, 4), Device(3, 2, 3, False, 4), Device(4, 3, 4, True, 4), Device(5, 3, 4, False, 6), Device(6, 4, 5, True, 5), Device(7, 4, 5, False, 5), Device(8, 5, 6, True, 3), Device(9, 5, 6, False, 3), Device(10, 6, 7, True, 5), Device(11, 6, 7, False, 2), Device(12, 7, 8, True, 3), Device(13, 7, 8, False, 3), Device(14, 8, 2, True, 5), Device(15, 8, 2, False, 2), Device(16, 2, 1, True, 3), Device(17, 2, 1, False, 3), Device(18, 3, 2, True, 3), Device(19, 3, 2, False, 6), Device(20, 4, 3, True, 2), Device(21, 4, 3, False, 4), Device(22, 5, 4, True, 5), Device(23, 5, 4, False, 5), Device(24, 6, 5, True, 1), Device(25, 6, 5, False, 3), Device(26, 7, 6, True, 2), Device(27, 7, 6, False, 3), Device(28, 8, 7, True, 3), Device(29, 8, 7, False, 3), Device(30, 2, 8, True, 4), Device(31, 2, 8, False, 2)]
 node = {}
 device = {}
 nodes_string = []

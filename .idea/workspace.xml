@@ -4,6 +4,8 @@
     <list default="true" id="1270a539-110a-467a-8354-e6f8c911d9e0" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/queue_sim/hack/bin/python" afterPath="$PROJECT_DIR$/queue_sim/hack/bin/python" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/queue_sim/hack/bin/python3.5" afterPath="$PROJECT_DIR$/queue_sim/hack/bin/python3.5" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/queue_sim/devices.json" afterPath="$PROJECT_DIR$/queue_sim/devices.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/queue_sim/run.py" afterPath="$PROJECT_DIR$/queue_sim/run.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/queue_sim/traffic.json" afterPath="$PROJECT_DIR$/queue_sim/traffic.json" />
     </list>
@@ -20,8 +22,8 @@
       <file leaf-file-name="run.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/queue_sim/run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="433">
-              <caret line="76" column="9" lean-forward="false" selection-start-line="76" selection-start-column="9" selection-end-line="76" selection-end-column="9" />
+            <state relative-caret-position="1241">
+              <caret line="34" column="0" lean-forward="false" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -312,8 +314,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/queue_sim/run.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="433">
-          <caret line="76" column="9" lean-forward="false" selection-start-line="76" selection-start-column="9" selection-end-line="76" selection-end-column="9" />
+        <state relative-caret-position="1241">
+          <caret line="34" column="0" lean-forward="false" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
