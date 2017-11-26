@@ -29,19 +29,42 @@ NodeList = [Node(1, 0, 10), Node(2, 0, 20), Node(3, 0, 30), Node(4, 10, 30), Nod
 
 DeviceList = [Device(1, 1, 2, True), Device(2, 1, 2, False), Device(3, 2, 3, True), Device(4, 2, 3, False), Device(5, 3, 4, True), Device(6, 3, 4, False), Device(7, 4, 5, True), Device(8, 4, 5, False), Device(9, 5, 6, True), Device(10, 5, 6, False), Device(11, 6, 7, True), Device(12, 6, 7, False), Device(13, 7, 8, True), Device(14, 7, 8, False), Device(15, 8, 2, True), Device(16, 8, 2, False)]
 
-nodes = {}
-devices = {}
+node = {}
+device = {}
+nodes_string = []
+devices_string = []
+
+# for i in range(len(NodeList)):
+#     nodes.update({NodeList[i].id: [NodeList[i].long, NodeList[i].lat]})
+# for i in range(len(DeviceList)):
+#     devices.update({DeviceList[i].id: [DeviceList[i].node_in, DeviceList[i].node_out, DeviceList[i].inflow]})
 
 for i in range(len(NodeList)):
-    nodes.update({NodeList[i].id: [NodeList[i].long, NodeList[i].lat]})
-for i in range(len(DeviceList)):
-    devices.update({DeviceList[i].id: [DeviceList[i].node_in, DeviceList[i].node_out, DeviceList[i].inflow]})
+    node = {"NodeID": NodeList[i].id, "Longitude": NodeList[i].long, "Latitude": NodeList[i].lat}
+    nodes_string.append(node)
+    #
+    # with open('nodes.json') as fp:
+    #     data = json.load(fp)
+    # # json.dump(nodes, fp)
+    # data.update(nodes)
 
 with open('nodes.json', 'w') as fp:
-    json.dump(nodes, fp)
+    json.dump(nodes_string, fp)
+
+for i in range(len(DeviceList)):
+    device = {"DeviceID": DeviceList[i].id, "NodeAID": DeviceList[i].node_in, "NodeBID": DeviceList[i].node_out, "Inflow": DeviceList[i].inflow}
+    devices_string.append(device)
+
 
 with open('devices.json', 'w') as fp:
-    json.dump(devices, fp)
+    json.dump(devices_string, fp)
+
+# Import Data and correlate to MBed Devices
+
+with open("test.json") as json_file:
+    json_string = json.load(json_file)
+
+
 
 
 
