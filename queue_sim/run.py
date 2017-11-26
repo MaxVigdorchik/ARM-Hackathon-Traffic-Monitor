@@ -2,7 +2,15 @@ import json
 import datetime
 import time
 import numpy as np
+import paho.mqtt.client as mqtt
+
 # Make fake graph for data and testing
+
+mqttc = mqtt.Client()
+mqttc.reinitialise(client_id="Eir", clean_session=True, userdata=None)
+# mqttc.reinitialise()
+
+mqttc.connect("mqtt.ntomi.me")
 
 # Nodes
 
@@ -62,35 +70,79 @@ for i in range(len(DeviceList)):
 with open('devices.json', 'w') as fp:
     json.dump(devices_string, fp)
 
-# Simulate Traffic
 
-interval = 0.5
-traffic = []
 
-for i in range(int(10 / interval)):
+mqttc.loop_start()
 
-    start_int = int((datetime.datetime.now() - datetime.datetime.utcfromtimestamp(0)).total_seconds()*1000)
-    start_str = "/Date({:d})/".format(start_int)
-    time.sleep(interval)  # time in seconds (interval = 0.5)
+while True:
 
-    for j in range(len(DeviceList)):
-        dur = np.random.normal(DeviceList[j].lam, 0.5)
-        dur = abs(dur)
-        # if dur_int > 1:
-        if dur < 0.001:
-            prob = 1
-        else:
-            prob = np.random.normal((1 / dur), 1)
-            prob = abs(prob)
-        print(prob)
-        if prob > 0.2:
-            device = {"deviceID": j, "interactions": [{"start": start_str, "duration": dur}]}
-            traffic.append(device)
-        else:
-            pass
-# print(traffic)
-with open('traffic.json', 'w') as fp:
-    json.dump(traffic, fp)
+    # Simulate Traffic
+
+    num_devices = 1480
+    sample_weights = np.random.normal(4, 1, num_devices)
+
+    interval = 0.5
+    traffic = []
+
+    for j in range(int(2 / interval)):
+
+        start_int = int((datetime.datetime.now() - datetime.datetime.utcfromtimestamp(0)).total_seconds()*1000)
+        start_str = "/Date({:d})/".format(start_int)
+        time.sleep(interval)  # time in seconds (interval = 0.5)
+
+        for i in range(len(sample_weights)):
+            dur = np.random.normal(sample_weights[i], 0.5)
+            dur = abs(dur)
+            # if dur_int > 1:
+            if dur < 0.001:
+                prob = 1
+            else:
+                prob = np.random.normal((1 / dur), 1)
+                prob = abs(prob)
+
+            if prob > 0.2:
+                device = {"deviceID": j, "interactions": [{"start": start_str, "duration": dur}]}
+                traffic.append(device)
+            else:
+                pass
+        # print(traffic)
+    # with open('traffic.json', 'w') as fp:
+    #     json.dump(traffic, fp)
+
+
+    # for i in range(len(traffic)):
+    #     mqttc.publish("Valhalla/Traffic", json.dumps(traffic[i]), qos=1)
+
+    mqttc.publish("Valhalla/Traffic", json.dumps(traffic), qos=1)
+
+
+
+# for i in range(int(10 / interval)):
+#
+#     start_int = int((datetime.datetime.now() - datetime.datetime.utcfromtimestamp(0)).total_seconds()*1000)
+#     start_str = "/Date({:d})/".format(start_int)
+#     time.sleep(interval)  # time in seconds (interval = 0.5)
+#
+#     for j in range(len(DeviceList)):
+#         dur = np.random.normal(DeviceList[j].lam, 0.5)
+#         dur = abs(dur)
+#         # if dur_int > 1:
+#         if dur < 0.001:
+#             prob = 1
+#         else:
+#             prob = np.random.normal((1 / dur), 1)
+#             prob = abs(prob)
+#         print(prob)
+#         if prob > 0.2:
+#             device = {"deviceID": j, "interactions": [{"start": start_str, "duration": dur}]}
+#             traffic.append(device)
+#         else:
+#             pass
+# # print(traffic)
+# with open('traffic.json', 'w') as fp:
+#     json.dump(traffic, fp)
+
+
 
 
 
