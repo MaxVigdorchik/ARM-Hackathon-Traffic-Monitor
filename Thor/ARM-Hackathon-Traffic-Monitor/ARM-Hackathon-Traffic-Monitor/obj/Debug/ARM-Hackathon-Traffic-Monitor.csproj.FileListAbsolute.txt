@@ -17,3 +17,5 @@ C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackat
 C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\bin\Debug\M2Mqtt.Net.dll
 C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\bin\Debug\DataAnalysis.pdb
 C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\bin\Debug\M2Mqtt.Net.pdb
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\bin\Debug\HSVtoRGB.dll
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\ARM-Hackathon-Traffic-Monitor\bin\Debug\HSVtoRGB.pdb

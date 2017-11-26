@@ -16,6 +16,7 @@ namespace DataAnalysis
         INode NodeB { get;}
 
         void Update(bool inFlow, IDataPacketJSON packet);
+        double GetWeight();
     }
 
     public interface INode
@@ -52,6 +53,6 @@ namespace DataAnalysis
     public interface IInteractionJSON
     {
         DateTime start { get; set; }
-        DateTime end { get; set; }
+        double duration { get; set; }
     }
 }

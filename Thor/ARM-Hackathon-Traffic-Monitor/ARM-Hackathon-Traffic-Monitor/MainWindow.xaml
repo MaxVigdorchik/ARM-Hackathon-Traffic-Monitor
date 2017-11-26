@@ -5,9 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ARM_Hackathon_Traffic_Monitor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="800" Width="1400">
     <Grid>
-        <Canvas Name="Map" HorizontalAlignment="Left" Height="246" Margin="50,33,0,0" VerticalAlignment="Top" Width="291"/>
-
+        <Canvas Name="Map" HorizontalAlignment="Left" Height="700" Margin="50,33,0,0" VerticalAlignment="Top" Width="1000"/>
+        <StackPanel HorizontalAlignment="Right" Height="700" Margin="500,33,0,0" VerticalAlignment="Top" Width="300" Background="#FF00A8FF">
+            <Label x:Name="nodeLabel" Content="NodeID:"/>
+            <TextBox x:Name="NodeIDBox" Height="23" TextWrapping="Wrap" Text="Click on Node to Select"/>
+            <Label x:Name="edgeLabel" Content="Edge from node {A} to {B}:"/>
+            <TextBox x:Name="EdgeBox" Height="23" TextWrapping="Wrap" Text="Click on Edge to Select"/>
+            <Label x:Name="weightLabel" Content="Weighting of Edge:"/>
+            <TextBox x:Name="WeightBox" Height="23" TextWrapping="Wrap" Text="Estimated traversal time displayed here"/>
+            <Label x:Name="stats" Content="Most recent packet" />
+            <TextBox x:Name="PacketBox" Height="400" TextWrapping="Wrap" Text=""/>
+        </StackPanel>
     </Grid>
 </Window>

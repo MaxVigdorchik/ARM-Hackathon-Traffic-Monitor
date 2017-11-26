@@ -39,7 +39,7 @@ namespace DataAnalysis
                 {
                     CarCount--;
 
-                    double duration = (interaction.end - interaction.start).TotalSeconds;
+                    double duration = interaction.duration;
                     Sum += duration;
 
                     if (Durations.Count == MAX_STORE)
@@ -53,6 +53,12 @@ namespace DataAnalysis
                     MeanDuration = Sum / Durations.Count;
                 }
             }
+
+            double ratio = Math.Log(MeanDuration * 1000) / Math.Log(100000);
+            IDevice dev = Dictionaries.Devices[packet.deviceID];
+            int nodeBID = dev.Edge.NodeB.NodeID;
+
+            Dictionaries.SetColours();
         }
 
         public double GetWeight()

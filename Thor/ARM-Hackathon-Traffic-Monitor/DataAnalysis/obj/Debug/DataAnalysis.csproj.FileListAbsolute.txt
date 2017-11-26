@@ -7,3 +7,5 @@ C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackat
 C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\DataAnalysis\bin\Debug\Newtonsoft.Json.xml
 C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\DataAnalysis\obj\Debug\DataAnalysis.dll
 C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\DataAnalysis\obj\Debug\DataAnalysis.pdb
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\DataAnalysis\bin\Debug\HSVtoRGB.dll
+C:\Users\ltray\Documents\Cambridge\ARM-Hackathon-Traffic-Monitor\Thor\ARM-Hackathon-Traffic-Monitor\DataAnalysis\bin\Debug\HSVtoRGB.pdb

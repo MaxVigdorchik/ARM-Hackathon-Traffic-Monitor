@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using DataAnalysis;
+using System.Media;
 
 namespace ARM_Hackathon_Traffic_Monitor
 {
@@ -25,25 +26,38 @@ namespace ARM_Hackathon_Traffic_Monitor
         public MainWindow()
         {
             InitializeComponent();
-            Retrieve.Initialise();
-            //Display.Nodes(Map);
+            Retrieve.Initialise(PacketBox);
+            Display.Initialise(NodeIDBox, EdgeBox, WeightBox, Map);
+            Display.Edges();
+            Display.Nodes();
         }
 
         public class Display
         {
-            private static Dictionary<int, Ellipse> NodeEllipses = new Dictionary<int, Ellipse>();
+            private static TextBox NodeIDBox { get; set; }
+            private static TextBox EdgeBox { get; set; }
+            private static TextBox WeightBox { get; set; }
+            private static Canvas C { get; set; }
+
+            public static void Initialise(TextBox nodeIDBox, TextBox edgeBox, TextBox weightBox, Canvas c)
+            {
+                NodeIDBox = nodeIDBox;
+                EdgeBox = edgeBox;
+                WeightBox = weightBox;
+                C = c;
+                Position.SetUpExtremes();
+            }
 
             //Nodes
-            public static void Nodes(Canvas c)
+            public static void Nodes()
             {
-                double width = c.ActualWidth;
-                double height = c.ActualHeight;
+                double width = C.Width;
+                double height = C.Height;
                 int nodeID;
 
                 Ellipse e;
                 Position p;
 
-                Position.SetUpExtremes();
                 var nodes = Dictionaries.Nodes.Values;
 
                 foreach (var node in nodes)
@@ -51,12 +65,12 @@ namespace ARM_Hackathon_Traffic_Monitor
                     nodeID = node.NodeID;
                     e = CreateNewEllipse();
 
-                    NodeEllipses.Add(nodeID, e);
-                    c.Children.Add(e);
+                    Dictionaries.NodeEllipses.Add(nodeID, e);
+                    C.Children.Add(e);
 
                     p = Position.ConvertToFraction(node);
-                    Canvas.SetLeft(e, c.ActualWidth * p.X - e.Width/2);
-                    Canvas.SetTop(e, c.ActualHeight * p.Y - e.Height/2);
+                    Canvas.SetLeft(e, width * p.X - e.Width/2);
+                    Canvas.SetTop(e, height * p.Y - e.Height/2);
 
                     e.MouseEnter += E_MouseEnter;
                 }
@@ -64,13 +78,25 @@ namespace ARM_Hackathon_Traffic_Monitor
 
             private static void E_MouseEnter(object sender, MouseEventArgs e)
             {
-                throw new NotImplementedException();
+                Ellipse ell = sender as Ellipse;
+                int key = 21;
+
+                foreach (var item in Dictionaries.NodeEllipses)
+                {
+                    if (item.Value == ell)
+                    {
+                        key = item.Key;
+                    }
+                }
+                NodeIDBox.Text = Convert.ToString(key);
+
+                SystemSounds.Beep.Play();
             }
 
             public static Ellipse CreateNewEllipse()
             {
                 Ellipse E = new Ellipse();
-                int Radius = 5;
+                int Radius = 10;
                 E.Stroke = Brushes.Black;
                 E.StrokeThickness = 1;
                 E.Width = Radius * 2;
@@ -80,28 +106,69 @@ namespace ARM_Hackathon_Traffic_Monitor
             }
 
             //Edges
-            public static void Edges(Canvas c)
+            public static void Edges()
             {
-                double width = c.ActualWidth;
-                double height = c.ActualHeight;
+                double width = C.Width;
+                double height = C.Height;
 
-                Line l;
+                Line L;
                 Position a;
                 Position b;
 
-                var edges = Dictionaries.Edges.Values;
+                var edgeItems = Dictionaries.Edges;
 
-                foreach (var edge in edges)
+                foreach (var edgeItem in edgeItems)
                 {
-                    a = Position.ConvertToFraction(edge.NodeA);
-                    b = Position.ConvertToFraction(edge.NodeB);
+                    var value = edgeItem.Value;
+                    var key = edgeItem.Key;
 
+                    a = Position.ConvertToFraction(value.NodeA);
+                    b = Position.ConvertToFraction(value.NodeB);
+
+                    L = CreateNewLine();
+
+                    Dictionaries.EdgeLines.Add(key, L);
+                    C.Children.Add(L);
+
+                    L.X1 = a.X * width;
+                    L.X2 = b.X * width;
+
+                    L.Y1 = a.Y * height;
+                    L.Y2 = b.Y * height;
+
+                    L.MouseEnter += L_MouseEnter;
                 }
+            }
+
+            private static void L_MouseEnter(object sender, MouseEventArgs e)
+            {
+                Line L = sender as Line;
+                int key = 21;
+
+                foreach (var item in Dictionaries.EdgeLines)
+                {
+                    if (item.Value == L)
+                    {
+                        key = item.Key;
+                    }
+                }
+
+                IEdge edge = Dictionaries.Edges[key];
+                int A = edge.NodeA.NodeID;
+                int B = edge.NodeB.NodeID;
+
+                EdgeBox.Text = A + " --> " + B;
+                WeightBox.Text = Convert.ToString(edge.GetWeight());
+
+                SystemSounds.Beep.Play();
             }
 
             public static Line CreateNewLine()
             {
-
+                Line L = new Line();
+                L.StrokeThickness = 5;
+                L.Stroke = new SolidColorBrush(Colors.Black);
+                return L;
             }
         }
 
@@ -165,8 +232,8 @@ namespace ARM_Hackathon_Traffic_Monitor
                 double longitude = n.Longitude;
                 double latitude = n.Latitude;
 
-                double x = (longitude - BotLeft.X) * (TopRight.X - BotLeft.X);
-                double y = 1 - ((latitude - BotLeft.Y) * (TopRight.Y = BotLeft.Y));
+                double x = (longitude - BotLeft.X) / (TopRight.X - BotLeft.X);
+                double y = 1 - ((latitude - BotLeft.Y) / (TopRight.Y - BotLeft.Y));
                 return new Position(x, y);
             }
         }

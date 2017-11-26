@@ -5,6 +5,9 @@ using System.Web.Script.Serialization;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using System.IO;
+using System.Windows.Controls;
+using System.Windows.Threading;
+using System.Threading;
 
 namespace DataAnalysis
 {
@@ -14,12 +17,17 @@ namespace DataAnalysis
         private static MqttClient Client = new MqttClient("mqtt.ntomi.me"); // GET RIGHT IP ADDRESS
         private static string ClientAddress = "ClientMachine"; // figure out if right
 
+        private static TextBox PacketBox;
+
         static string TrafficTopic = "Valhalla/Traffic"; // decide exact later
         static string GraphTopic = "Valhalla/Graph";
         static string TestTopic = "Mbed";
 
-        public static void Initialise()
+        static string LogFilePath = "packets.log";
+
+        public static void Initialise(TextBox packetBox)
         {
+            PacketBox = packetBox;
             CreateGraph();
             SubscribeToMQTT();
         }
@@ -45,7 +53,6 @@ namespace DataAnalysis
             {
                 Dictionaries.Devices.Add(device.DeviceID, new Device(device));
             }
-
         }
 
         //MQTT stuff
@@ -67,12 +74,36 @@ namespace DataAnalysis
 
         private static void Client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
-            string message = System.Text.Encoding.Default.GetString(e.Message); // retrieves message
-            IDataPacketJSON packet = Ser.Deserialize<DataPacketJSON>(message); // converts from json
-            IDevice device = Dictionaries.Devices[packet.deviceID];
-            bool inFlow = device.InFlow;
+            string message = System.Text.Encoding.Default.GetString(e.Message); // retrieves message        
+            PacketBox.Dispatcher.Invoke(() =>
+            {
+                PacketBox.Text = message;
+            });
 
-            device.Edge.Update(inFlow, packet);
+            if (e.Topic == TrafficTopic)
+            {
+                StreamWriter w = new StreamWriter(LogFilePath);
+                w.WriteLine(message);                
+
+                IDataPacketJSON packet = Ser.Deserialize<DataPacketJSON>(message); // converts from json
+                IDevice device = Dictionaries.Devices[packet.deviceID];
+                bool inFlow = device.InFlow;
+                device.Edge.Update(inFlow, packet);
+            }
+        }
+
+        public static void ReadFromHistory()
+        {
+            string PacketsData = File.ReadAllText(LogFilePath);
+            List<DataPacketJSON> packets = Ser.Deserialize<List<DataPacketJSON>>(PacketsData);
+            IDevice device;
+
+            foreach (var packet in packets)
+            {
+                device = Dictionaries.Devices[packet.deviceID];
+                bool inFlow = device.InFlow;
+                device.Edge.Update(inFlow, packet);
+            }
         }
     }
 }

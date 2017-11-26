@@ -19,7 +19,7 @@ namespace DataAnalysis
     public class InteractionJSON : IInteractionJSON
     {
         public DateTime start { get; set; }
-        public DateTime end { get; set; }
+        public double duration { get; set; }
     }
 
     public class DeviceJSON : IDeviceJSON
