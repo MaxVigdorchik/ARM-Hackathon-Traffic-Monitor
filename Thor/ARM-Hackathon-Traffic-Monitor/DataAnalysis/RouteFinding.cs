@@ -9,7 +9,13 @@ public class RouteFinding
 
     public RouteFinding(int originID, int destinationID)
     {
-        this.OriginID = originID
+        this.OriginID = originID;
+        this.DestinationID = destinationID;
+    }
+
+    public void DijkstraForwards()
+    {
+
     }
 }
 

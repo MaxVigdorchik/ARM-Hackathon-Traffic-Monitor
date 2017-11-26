@@ -13,12 +13,12 @@ namespace DataAnalysis
     public class DataPacketJSON : IDataPacketJSON
     {
         public int deviceID { get; set; }
-        public List<IInteractionJSON> interactions { get; set; }
+        public List<InteractionJSON> interactions { get; set; }
     }
 
     public class InteractionJSON : IInteractionJSON
     {
-        public DateTime start { get; set; }
+        public string start { get; set; } // integer number of ms since epoch
         public double duration { get; set; }
     }
 

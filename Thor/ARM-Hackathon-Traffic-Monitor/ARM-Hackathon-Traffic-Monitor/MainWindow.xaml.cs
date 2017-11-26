@@ -27,6 +27,7 @@ namespace ARM_Hackathon_Traffic_Monitor
         {
             InitializeComponent();
             Retrieve.Initialise(PacketBox);
+            Retrieve.ReadFromFile();
             Display.Initialise(NodeIDBox, EdgeBox, WeightBox, Map);
             Display.Edges();
             Display.Nodes();

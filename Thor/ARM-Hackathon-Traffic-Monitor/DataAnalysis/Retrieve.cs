@@ -92,9 +92,10 @@ namespace DataAnalysis
             }
         }
 
-        public static void ReadFromHistory()
+        public static void ReadFromFile()
         {
-            string PacketsData = File.ReadAllText(LogFilePath);
+            string trafficFilePath = "../../../../../queue_sim/traffic.json";
+            string PacketsData = File.ReadAllText(trafficFilePath);
             List<DataPacketJSON> packets = Ser.Deserialize<List<DataPacketJSON>>(PacketsData);
             IDevice device;
 

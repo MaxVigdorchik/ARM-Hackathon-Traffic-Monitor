@@ -47,12 +47,12 @@ namespace DataAnalysis
     public interface IDataPacketJSON
     {
         int deviceID { get; set; }
-        List<IInteractionJSON> interactions { get; set; }
+        List<InteractionJSON> interactions { get; set; }
     }
 
     public interface IInteractionJSON
     {
-        DateTime start { get; set; }
+        string start { get; set; }
         double duration { get; set; }
     }
 }

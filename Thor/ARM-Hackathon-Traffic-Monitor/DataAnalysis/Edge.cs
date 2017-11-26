@@ -19,6 +19,7 @@ namespace DataAnalysis
         public Edge(INode nodeA, INode nodeB)
         {
             Durations = new List<double>();
+            CarCount = 0;
             Sum = 0;
 
             this.NodeA = nodeA;
@@ -57,6 +58,7 @@ namespace DataAnalysis
             double ratio = Math.Log(MeanDuration * 1000) / Math.Log(100000);
             IDevice dev = Dictionaries.Devices[packet.deviceID];
             int nodeBID = dev.Edge.NodeB.NodeID;
+            //add code to change colour of node
 
             Dictionaries.SetColours();
         }
