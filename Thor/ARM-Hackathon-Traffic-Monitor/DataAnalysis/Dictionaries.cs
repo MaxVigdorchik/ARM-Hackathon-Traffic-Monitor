@@ -78,11 +78,15 @@ public static class Dictionaries
 
             Color col = HSV2RGB.Convert((float)ratio, 1.0f, 1.0f, 1.0f);
 
-            L.Dispatcher.Invoke(() =>
+            try
             {
-                L.Stroke = new SolidColorBrush(col);
-                L.StrokeThickness = MAX_THICKNESS * ratio + 1;
-            });           
+                L.Dispatcher.Invoke(() =>
+                {
+                    L.Stroke = new SolidColorBrush(col);
+                    L.StrokeThickness = MAX_THICKNESS * ratio + 1;
+                });
+            }
+            catch { }          
         }
     }
 }

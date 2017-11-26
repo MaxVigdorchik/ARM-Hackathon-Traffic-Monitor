@@ -13,7 +13,7 @@ namespace HSVtoRGB
         {
             // this procedure is copied from http://stackoverflow.com/questions/17080535/hsv-to-rgb-stops-at-yellow-c-sharp
 
-            if (hue > 1 || saturation > 1 || value > 1) throw new Exception("values cannot be more than 1!");
+            if (hue > 1 || saturation > 1 || value > 1) hue = 1;
             if (hue < 0 || saturation < 0 || value < 0) throw new Exception("values cannot be less than 0!");
 
             // range selection (my addition)

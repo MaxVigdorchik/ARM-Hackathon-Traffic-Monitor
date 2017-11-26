@@ -22,11 +22,15 @@ namespace ARM_Hackathon_Traffic_Monitor
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {        
+    {
+        private bool SmallGraph = false; // toggle to change between demo modes
+        private bool ReadFromFile = false;
+           
         public MainWindow()
         {
             InitializeComponent();
-            Retrieve.Initialise(PacketBox);           
+            WriteToFile.Write();
+            Retrieve.Initialise(PacketBox, SmallGraph);           
             Display.Initialise(NodeIDBox, EdgeBox, WeightBox, Map);
             Display.Edges();
             Display.Nodes();
@@ -36,7 +40,10 @@ namespace ARM_Hackathon_Traffic_Monitor
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            //Retrieve.ReadFromFile();
+            if (ReadFromFile)
+            {
+                Retrieve.ReadFromFile(SmallGraph);
+            }
         }
 
         public class Display
@@ -97,7 +104,7 @@ namespace ARM_Hackathon_Traffic_Monitor
                 }
                 NodeIDBox.Text = Convert.ToString(key);
 
-                SystemSounds.Beep.Play();
+                //SystemSounds.Beep.Play();
             }
 
             public static Ellipse CreateNewEllipse()
@@ -138,10 +145,10 @@ namespace ARM_Hackathon_Traffic_Monitor
                     C.Children.Add(L);
 
                     L.X1 = a.X * width;
-                    L.X2 = b.X * width;
+                    L.X2 = ((b.X + a.X)/2) * width;
 
                     L.Y1 = a.Y * height;
-                    L.Y2 = b.Y * height;
+                    L.Y2 = ((b.Y + a.Y)/2) * height;
 
                     L.MouseEnter += L_MouseEnter;
                 }
@@ -166,6 +173,7 @@ namespace ARM_Hackathon_Traffic_Monitor
 
                 EdgeBox.Text = A + " --> " + B;
                 WeightBox.Text = edge.ToString();
+                //WeightBox.Text = Convert.ToString(edge.GetWeight());
 
                 SystemSounds.Beep.Play();
             }
@@ -246,6 +254,17 @@ namespace ARM_Hackathon_Traffic_Monitor
                 double y = 1 - ((latitude - BotLeft.Y) / (TopRight.Y - BotLeft.Y));
                 return new Position(x, y);
             }
+        }
+
+        private void QuitButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
+
+        private void RestartButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.Application.Restart();
+            System.Windows.Application.Current.Shutdown();
         }
     }
 }

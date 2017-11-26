@@ -12,7 +12,7 @@ namespace DataAnalysis
         private const double RED_THRESHOLD = 5;
         private const double ORANGE_THRESHOLD = 3;
 
-        private const int MAX_STORE = 100;
+        private const int MAX_STORE = 5;
 
         private int CarCount { get; set; }
         private double MeanDuration { get; set; }
@@ -66,21 +66,25 @@ namespace DataAnalysis
             int nodeBID = dev.Edge.NodeB.NodeID;
             Ellipse e = Dictionaries.NodeEllipses[nodeBID];
 
-            e.Dispatcher.Invoke(() =>
+            try
             {
-                if (MeanDuration < ORANGE_THRESHOLD)
+                e.Dispatcher.Invoke(() =>
                 {
-                    e.Fill = new SolidColorBrush(Colors.GreenYellow);
-                }
-                else if (MeanDuration < RED_THRESHOLD)
-                {
-                    e.Fill = new SolidColorBrush(Colors.Orange);
-                }
-                else
-                {
-                    e.Fill = new SolidColorBrush(Colors.Red);
-                }
-            });          
+                    if (MeanDuration < ORANGE_THRESHOLD)
+                    {
+                        e.Fill = new SolidColorBrush(Colors.GreenYellow);
+                    }
+                    else if (MeanDuration < RED_THRESHOLD)
+                    {
+                        e.Fill = new SolidColorBrush(Colors.Orange);
+                    }
+                    else
+                    {
+                        e.Fill = new SolidColorBrush(Colors.Red);
+                    }
+                });
+            }
+            catch { }      
 
             Dictionaries.SetColours();
         }
@@ -103,7 +107,7 @@ namespace DataAnalysis
 
         public override string ToString()
         {
-            string res = "CarCount: " + CarCount + " MeanDuration: " + MeanDuration;
+            string res = "CarCount: " + CarCount + " MeanDur: " + Math.Truncate(MeanDuration * 100) / 100;
             return res;
         }
     }

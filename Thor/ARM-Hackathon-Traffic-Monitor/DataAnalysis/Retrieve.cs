@@ -8,6 +8,7 @@ using System.IO;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using System.Threading;
+using System.ComponentModel;
 
 namespace DataAnalysis
 {
@@ -25,18 +26,28 @@ namespace DataAnalysis
 
         static string LogFilePath = "packets.log";
 
-        public static void Initialise(TextBox packetBox)
+        public static void Initialise(TextBox packetBox, bool smallGraph)
         {
             PacketBox = packetBox;
-            CreateGraph();
+            CreateGraph(smallGraph);
             SubscribeToMQTT();
         }
 
         //graph creation
-        private static void CreateGraph()
+        private static void CreateGraph(bool smallGraph)
         {
-            string NodesPath = "../../../../../queue_sim/nodes.json";
-            string DevicesPath = "../../../../../queue_sim/devices.json";
+            string NodesPath, DevicesPath;
+
+            if (smallGraph)
+            {
+                NodesPath = "../../../../../queue_sim/nodes.json";
+                DevicesPath = "../../../../../queue_sim/devices.json";
+            }
+            else
+            {
+                NodesPath = "nodes.json";
+                DevicesPath = "devices.json";
+            }
 
             string NodesJSON = File.ReadAllText(NodesPath);
             string DevicesJSONString = File.ReadAllText(DevicesPath);
@@ -74,46 +85,70 @@ namespace DataAnalysis
 
         private static void Client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
-            string message = System.Text.Encoding.Default.GetString(e.Message); // retrieves message        
-            
+            string message = System.Text.Encoding.Default.GetString(e.Message); // retrieves message                   
 
             if (e.Topic == TrafficTopic)
-            {
-                //StreamWriter w = new StreamWriter(LogFilePath);
-                //w.WriteLine(message);                
-
-                IDataPacketJSON packet = Ser.Deserialize<DataPacketJSON>(message); // converts from json
+            {           
+                List<DataPacketJSON> packetList = Ser.Deserialize<List<DataPacketJSON>>(message); // converts from json
 
                 PacketBox.Dispatcher.Invoke(() =>
                 {
-                    PacketBox.Text = Convert2String(packet);
+                    PacketBox.Text = Convert2String(packetList[0]);
                 });
 
-                IDevice device = Dictionaries.Devices[packet.deviceID];
-                bool inFlow = device.InFlow;
-                device.Edge.Update(inFlow, packet);
+                foreach (var packet in packetList)
+                {
+                    IDevice device = Dictionaries.Devices[packet.deviceID];
+                    bool inFlow = device.InFlow;
+                    device.Edge.Update(inFlow, packet);
+                }
             }
         }
 
         private static string Convert2String(IDataPacketJSON packet)
         {
-            string rep = "deviceID: " + packet.deviceID + "\n";
-            rep += "interactions: { \n";
+            string rep = "[---RECEIVED PACKET @ " + DateTime.Now + " ---]\n";
+            rep += "{\n";
+            rep += "    deviceID: " + packet.deviceID + "\n";
+            rep += "    interactions: [ \n";
             foreach (var interaction in packet.interactions)
             {
-                rep += "start: " + interaction.start + "\n";
-                rep += "duration: " + interaction.duration + "\n";
-                rep += ",\n";
+                rep += "    {\n";
+                rep += "        start: " + interaction.start + "\n";
+                rep += "        duration: " + interaction.duration + "\n";
+                rep += "    },\n";
             }
-            rep += "}";
+            rep += "]\n";
+            rep += "}\n";
             return rep;
         }
 
-        public static void ReadFromFile()
+        public static void ReadFromFile(bool smallGraph)
         {
-            string trafficFilePath = "../../../../../queue_sim/traffic.json";
+            string trafficFilePath;
+            if (smallGraph)
+            {
+                trafficFilePath = "../../../../../queue_sim/traffic.json";
+            }
+            else
+            {
+                trafficFilePath = "packets.json";
+            }
+
             string PacketsData = File.ReadAllText(trafficFilePath);
             List<DataPacketJSON> packets = Ser.Deserialize<List<DataPacketJSON>>(PacketsData);
+
+            packets = Shuffle(packets);
+
+            BackgroundWorker bgw = new BackgroundWorker();
+            bgw.DoWork += Bgw_DoWork;
+            bgw.RunWorkerAsync(packets);
+            
+        }
+
+        private static void Bgw_DoWork(object sender, DoWorkEventArgs e)
+        {
+            List<DataPacketJSON> packets = e.Argument as List<DataPacketJSON>;
             IDevice device;
 
             foreach (var packet in packets)
@@ -122,6 +157,175 @@ namespace DataAnalysis
                 bool inFlow = device.InFlow;
                 device.Edge.Update(inFlow, packet);
             }
+        }
+
+        public static List<T> Shuffle<T>(List<T> list)
+        {
+            Random rng = new Random();
+
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
+
+            return list;
+        }
+    }
+
+    public static class WriteToFile
+    {
+        private static JavaScriptSerializer Ser = new JavaScriptSerializer(); // Javascrit serializer
+
+        public static void Write()
+        {
+            
+            int rows = 10;
+            int columns = 20;
+            int N = rows * columns;
+
+            double randomNessFactor = 2;
+
+            NodeJSON node;
+            List<NodeJSON> nodeList = new List<NodeJSON>();
+
+            Random rand = new Random();
+
+            for(int n = 0; n < N; n++)
+            {
+                node = new NodeJSON();
+                node.NodeID = n;
+                node.Longitude = n / rows + rand.NextDouble() / randomNessFactor;
+                node.Latitude = n % rows + rand.NextDouble() / randomNessFactor;
+                nodeList.Add(node);         
+            }
+
+            string nodeString = Ser.Serialize(nodeList);
+            File.WriteAllText("nodes.json", nodeString);
+
+            int idCounter = 0;
+            DeviceJSON device;
+            List<DeviceJSON> deviceList = new List<DeviceJSON>();
+
+            for(int n = 0; n < N; n++)
+            {
+                if (n - 1 >= 0 && n % rows != 0)
+                {
+                    device = new DeviceJSON();
+                    device.DeviceID = idCounter;
+                    device.NodeAID = n;
+                    device.NodeBID = n - 1;
+                    device.InFlow = true;
+                    idCounter++;
+
+                    deviceList.Add(device);
+
+                    device = new DeviceJSON();
+                    device.DeviceID = idCounter;
+                    device.NodeAID = n;
+                    device.NodeBID = n - 1;
+                    device.InFlow = false;
+                    idCounter++;
+
+                    deviceList.Add(device);
+                }
+
+                if (n + 1 < N && (n + 1) % rows != 0)
+                {
+                    device = new DeviceJSON();
+                    device.DeviceID = idCounter;
+                    device.NodeAID = n;
+                    device.NodeBID = n + 1;
+                    device.InFlow = true;
+                    idCounter++;
+
+                    deviceList.Add(device);
+
+                    device = new DeviceJSON();
+                    device.DeviceID = idCounter;
+                    device.NodeAID = n;
+                    device.NodeBID = n + 1;
+                    device.InFlow = false;
+                    idCounter++;
+
+                    deviceList.Add(device);
+                }
+
+                if (n + rows < N)
+                {
+                    device = new DeviceJSON();
+                    device.DeviceID = idCounter;
+                    device.NodeAID = n;
+                    device.NodeBID = n + rows;
+                    device.InFlow = true;
+                    idCounter++;
+
+                    deviceList.Add(device);
+
+                    device = new DeviceJSON();
+                    device.DeviceID = idCounter;
+                    device.NodeAID = n;
+                    device.NodeBID = n + rows;
+                    device.InFlow = false;
+                    idCounter++;
+
+                    deviceList.Add(device);
+                }
+
+                if (n - rows >= 0)
+                {
+                    device = new DeviceJSON();
+                    device.DeviceID = idCounter;
+                    device.NodeAID = n;
+                    device.NodeBID = n - rows;
+                    device.InFlow = true;
+                    idCounter++;
+
+                    deviceList.Add(device);
+
+                    device = new DeviceJSON();
+                    device.DeviceID = idCounter;
+                    device.NodeAID = n;
+                    device.NodeBID = n - rows;
+                    device.InFlow = false;
+                    idCounter++;
+
+                    deviceList.Add(device);
+                }
+            }
+
+            string deviceString = Ser.Serialize(deviceList);
+            File.WriteAllText("devices.json", deviceString);
+
+            DataPacketJSON packet;
+            InteractionJSON interaction;
+            List<DataPacketJSON> packetList = new List<DataPacketJSON>();
+            int packetNumber = 10000;
+
+            for (int i = 0; i < packetNumber; i += 3)
+            {
+                packet = new DataPacketJSON();
+                packet.deviceID = i % deviceList.Count;
+                packet.interactions = new List<InteractionJSON>();
+
+                for(int j = 0; j < rand.Next(10); j++)
+                {
+                    interaction = new InteractionJSON();
+                    interaction.start = "0";
+                    interaction.duration = rand.NextDouble() * 6;
+
+                    packet.interactions.Add(interaction);
+                }
+
+                packetList.Add(packet);
+            }
+
+            string packetString = Ser.Serialize(packetList);
+            File.WriteAllText("packets.json", packetString);
         }
     }
 }
