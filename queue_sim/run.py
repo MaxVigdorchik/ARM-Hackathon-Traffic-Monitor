@@ -1,4 +1,6 @@
 import json
+import datetime
+import time
 # Make fake graph for data and testing
 
 # Nodes
@@ -12,11 +14,12 @@ class Node:
 
 
 class Device:
-    def __init__(self, id, node_in, node_out, inflow):
+    def __init__(self, id, node_in, node_out, inflow, lam):
         self.id = id
         self.node_in = node_in
         self.node_out = node_out
         self.inflow = inflow
+        self.lam = lam
 
 
 # Node1 = Node(1, 0, 10)
@@ -27,7 +30,7 @@ NodeList = [Node(1, 0, 10), Node(2, 0, 20), Node(3, 0, 30), Node(4, 10, 30), Nod
 # Device1 = Device(1, 1, 2, True)
 # Device2 = Device(2, 1, 2, False)
 
-DeviceList = [Device(1, 1, 2, True), Device(2, 1, 2, False), Device(3, 2, 3, True), Device(4, 2, 3, False), Device(5, 3, 4, True), Device(6, 3, 4, False), Device(7, 4, 5, True), Device(8, 4, 5, False), Device(9, 5, 6, True), Device(10, 5, 6, False), Device(11, 6, 7, True), Device(12, 6, 7, False), Device(13, 7, 8, True), Device(14, 7, 8, False), Device(15, 8, 2, True), Device(16, 8, 2, False)]
+DeviceList = [Device(0, 1, 2, True, 2), Device(1, 1, 2, False, 7), Device(2, 2, 3, True, 4), Device(3, 2, 3, False, 4), Device(4, 3, 4, True, 4), Device(5, 3, 4, False, 6), Device(6, 4, 5, True, 5), Device(7, 4, 5, False, 5), Device(8, 5, 6, True, 3), Device(9, 5, 6, False, 3), Device(10, 6, 7, True, 5), Device(11, 6, 7, False, 2), Device(12, 7, 8, True, 3), Device(13, 7, 8, False, 3, Device(14, 8, 2, True, 5), Device(15, 8, 2, False, 2)]
 
 node = {}
 device = {}
@@ -59,11 +62,25 @@ for i in range(len(DeviceList)):
 with open('devices.json', 'w') as fp:
     json.dump(devices_string, fp)
 
-# Import Data and correlate to MBed Devices
+# Simulate Traffic
 
-with open("test.json") as json_file:
-    json_string = json.load(json_file)
+interval = 0.5
+traffic = []
 
+for i in range(10 / interval):
+
+    start_int = int((datetime.datetime.now() - datetime.datetime.utcfromtimestamp(0)).total_seconds()*1000)
+    start_str = "/Date({:d})/".format(start_int)
+    time.sleep(interval) # time in seconds (interval = 0.5)
+
+
+    for i in range(len(devices_string)):
+        dur_int = numpy.random.poisson(devices_string[i].lam, 1)
+        device = {"DeviceID": i, "Interactions": [{"start": start_str, "duration": dur_int}]}
+        traffic.append(device)
+
+with open('traffic.json', 'w') as fp:
+    json.dump(traffic, fp)
 
 
 
